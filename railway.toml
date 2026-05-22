@@ -1,0 +1,12 @@
+# Deploy on Railway.app
+# 1. Push this repo to GitHub
+# 2. Go to https://railway.app → New Project → Deploy from GitHub
+# 3. Set environment variables in the Railway dashboard
+
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

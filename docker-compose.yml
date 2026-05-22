@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - db_data:/app/data
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-change-this-in-production}
+      - DB_PATH=/app/data/substitution.db
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-*}
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  db_data:

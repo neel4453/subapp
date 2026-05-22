@@ -1,0 +1,23 @@
+# Deploy on Render.com — free tier available
+# 1. Push this repo to GitHub
+# 2. Go to https://render.com → New → Web Service → connect your repo
+# 3. Render auto-detects this file
+
+services:
+  - type: web
+    name: teacher-substitution-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free          # upgrade to starter ($7/mo) for persistent disk
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true      # Render auto-generates a secure random value
+      - key: DB_PATH
+        value: /tmp/substitution.db
+      - key: ALLOWED_ORIGINS
+        value: "*"
+    disk:
+      name: db
+      mountPath: /data
+      sizeGB: 1
